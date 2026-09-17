@@ -15,6 +15,13 @@
       "when": 1789668589277,
       "tag": "0001_storage_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789671423351,
+      "tag": "0002_staff_can_respond_to_reports",
+      "breakpoints": true
     }
   ]
 }
