@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { useAuth, signedUrl } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -59,6 +60,60 @@ export function ReportPhoto({ path }: { path: string | null }) {
   if (!url) return null;
   return (
     <img src={url} alt="Reported issue" className="mt-3 max-h-64 w-full rounded-md object-cover" />
+  );
+}
+
+const STATUS_OPTIONS = ["submitted", "in_progress", "resolved", "rejected"];
+
+function ReplyBox({ r, onSaved }: { r: ReportRow; onSaved: () => void }) {
+  const [status, setStatus] = useState(r.status);
+  const [response, setResponse] = useState(r.response ?? "");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  async function save() {
+    setBusy(true);
+    setMsg(null);
+    const { error } = await supabase
+      .from("reports")
+      .update({ status, response, updated_at: new Date().toISOString() })
+      .eq("id", r.id);
+    setBusy(false);
+    setMsg(error ? error.message : "Reply sent to the student.");
+    if (!error) onSaved();
+  }
+
+  return (
+    <div className="mt-3 space-y-2 rounded-md border border-border p-3">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        Reply to reporter
+      </p>
+      <div className="grid gap-2 sm:grid-cols-[180px_1fr]">
+        <select
+          className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          {STATUS_OPTIONS.map((s) => (
+            <option key={s} value={s}>
+              {s.replace("_", " ")}
+            </option>
+          ))}
+        </select>
+        <Textarea
+          rows={2}
+          placeholder="Write a reply for the student"
+          value={response}
+          onChange={(e) => setResponse(e.target.value)}
+        />
+      </div>
+      <div className="flex items-center gap-3">
+        <Button size="sm" disabled={busy} onClick={save}>
+          Send reply
+        </Button>
+        {msg && <span className="text-xs text-muted-foreground">{msg}</span>}
+      </div>
+    </div>
   );
 }
 
@@ -185,6 +240,7 @@ function Dashboard() {
                     {r.response}
                   </p>
                 )}
+                {(role === "staff" || role === "host") && <ReplyBox r={r} onSaved={load} />}
               </CardContent>
             </Card>
           ))}
