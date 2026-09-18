@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      contacts: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          phone: string
+          role_label: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          phone: string
+          role_label?: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string
+          role_label?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -127,6 +157,30 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: boolean
+          logo_url: string | null
+          site_title: string
+          tagline: string
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          logo_url?: string | null
+          site_title?: string
+          tagline?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          logo_url?: string | null
+          site_title?: string
+          tagline?: string
+          updated_at?: string
         }
         Relationships: []
       }
