@@ -131,15 +131,14 @@ function Dashboard() {
       .select("*")
       .order("created_at", { ascending: false });
     setReports((data ?? []) as ReportRow[]);
-    const { data: up } = await supabase.from("report_upvotes").select("report_id, user_id");
+    const [{ data: countRows }, { data: own }] = await Promise.all([
+      supabase.rpc("report_vote_counts"),
+      supabase.from("report_upvotes").select("report_id"),
+    ]);
     const counts: Record<string, number> = {};
-    const own = new Set<string>();
-    for (const row of up ?? []) {
-      counts[row.report_id] = (counts[row.report_id] ?? 0) + 1;
-      if (row.user_id === user?.id) own.add(row.report_id);
-    }
+    for (const row of countRows ?? []) counts[row.report_id] = Number(row.votes);
     setVotes(counts);
-    setMine(own);
+    setMine(new Set((own ?? []).map((r) => r.report_id)));
     setLoading(false);
   }
 
