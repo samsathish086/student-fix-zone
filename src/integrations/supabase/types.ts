@@ -160,6 +160,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      report_vote_counts: {
+        Args: never
+        Returns: {
+          report_id: string
+          votes: number
+        }[]
+      }
     }
     Enums: {
       app_role: "student" | "staff" | "host"
