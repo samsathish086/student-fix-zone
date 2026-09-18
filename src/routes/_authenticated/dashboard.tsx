@@ -172,8 +172,8 @@ function Dashboard() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Campus reports</h1>
             <p className="text-sm text-muted-foreground">
-              {role === "staff"
-                ? "Staff view: read-only access to reports."
+              {role === "staff" || role === "host"
+                ? "Update the status and reply to students directly on each report."
                 : "Upvote the issues that need attention first."}
             </p>
           </div>
