@@ -35,6 +35,7 @@ const CATEGORIES = [
   "Electrical",
   "Furniture",
   "Canteen & Food",
+  "College Bus & Transportation",
   "Cleanliness",
   "Other",
 ];
