@@ -60,7 +60,10 @@ export function SiteProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = settings.theme_key;
+    document.documentElement.dataset["theme"] = settings.theme_key;
+    if (document.title === "CampusFix" || document.title.startsWith("CampusFix —")) {
+      document.title = `${settings.site_title} — Campus issue reporting`;
+    }
   }, [settings.theme_key]);
 
   return (
