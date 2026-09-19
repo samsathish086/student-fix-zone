@@ -166,6 +166,7 @@ export type Database = {
           logo_url: string | null
           site_title: string
           tagline: string
+          theme_key: string
           updated_at: string
         }
         Insert: {
@@ -173,6 +174,7 @@ export type Database = {
           logo_url?: string | null
           site_title?: string
           tagline?: string
+          theme_key?: string
           updated_at?: string
         }
         Update: {
@@ -180,6 +182,7 @@ export type Database = {
           logo_url?: string | null
           site_title?: string
           tagline?: string
+          theme_key?: string
           updated_at?: string
         }
         Relationships: []
